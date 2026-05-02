@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../../core/services/auth';
 
 @Component({
   selector: 'app-login',
@@ -12,21 +12,17 @@ export class Login {
   username = '';
   password = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private authService: AuthService) {}
 
   login() {
-    const data = {
-      username: this.username,
-      password: this.password,
-    };
-
-    this.http.post('http://127.0.0.1:8000/api/auth/login/', data)
+    this.authService.login(this.username, this.password)
       .subscribe({
-        next: (response) => {
-          console.log('Login OK:', response);
+        next: (response: any) => {
+          this.authService.saveToken(response.access);
+          console.log('Token guardado');
         },
-        error: (error) => {
-          console.log('Login error:', error);
+        error: (error: any) => {
+          console.log('Error', error);
         }
       });
   } 
