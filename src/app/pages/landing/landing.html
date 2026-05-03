@@ -1,0 +1,100 @@
+<header>
+  <div class="logo">SIUDA</div>
+  <nav>
+    <a href="#">Inicio</a>
+    <a href="#">Servicios</a>
+    <a href="#">Procesos</a>
+    <a routerLink="/login">Iniciar sesión</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="slides">
+    <div 
+      class="slide"
+      *ngFor="let slide of slides; let i = index"
+      [class.active]="i === currentIndex"
+      [style.background-image]="'url(' + slide + ')'"
+    >
+      <div class="overlay">
+        <h1>{{ titles[i] }}</h1>
+        <p>{{ descriptions[i] }}</p>
+        <button>Ver más</button>
+      </div>
+    </div>
+  </div>
+
+  <button class="prev" (click)="prevSlide()">&#10094;</button>
+  <button class="next" (click)="nextSlide()">&#10095;</button>
+</section>
+
+<section class="services fade-in">
+  <div class="container">
+    <h2>Nuestros Servicios</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Compras Públicas</h3>
+        <p>Gestión de adquisiciones de bienes y servicios.</p>
+      </div>
+      <div class="card">
+        <h3>Logística</h3>
+        <p>Control eficiente de almacenes y distribución.</p>
+      </div>
+      <div class="card">
+        <h3>Contrataciones</h3>
+        <p>Procesos transparentes y eficientes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process fade-in">
+  <div class="container">
+    <h2>¿Cómo trabajamos?</h2>
+    <div class="steps">
+      <div class="step">Solicitud</div>
+      <div class="step">Evaluación</div>
+      <div class="step">Adquisición</div>
+      <div class="step">Entrega</div>
+    </div>
+  </div>
+</section>
+
+<section class="cta fade-in">
+  <div class="container">
+    <h2>Trabaja con Nosotros</h2>
+    <button (click)="openModal()">Contáctanos</button>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Unidad de Abastecimiento</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal" [class.show]="modalOpen">
+  <div class="modal-content">
+
+    <span class="close" (click)="closeModal()">&times;</span>
+
+    <form class="contact-form" (ngSubmit)="enviar()">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" [(ngModel)]="form.nombre" name="nombre" required>
+      </div>
+
+      <div class="form-group">
+        <label>Correo</label>
+        <input type="email" [(ngModel)]="form.correo" name="correo" required>
+      </div>
+
+      <div class="form-group">
+        <label>Mensaje</label>
+        <textarea rows="5" [(ngModel)]="form.mensaje" name="mensaje" required></textarea>
+      </div>
+
+      <button type="submit">Enviar</button>
+    </form>
+
+  </div>
+</div>

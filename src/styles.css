@@ -1,2 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 @import "bootstrap/dist/css/bootstrap.min.css";
+
+:root {
+  --primary: #0d47a1;
+  --secondary: #1565c0;
+  --accent: #42a5f5;
+  --light: #f9f9f9;
+  --dark: #333;
+  --white: #fff;
+  --background: #1e3a5f;
+  --color: #333;
+  --dash-primary: #2e7d32;
+  --dash-secondary: #43a047;
+  --dash-bg: #f1f8f4;
+  --dash-text: #1b5e20;
+  --dash-white: #ffffff;
+  --dash-muted: #6b7280;
+  --dash-danger: #e53935;
+}

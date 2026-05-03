@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth';
 
 @Component({
@@ -12,7 +13,7 @@ export class Login {
   username = '';
   password = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   login() {
     this.authService.login(this.username, this.password)
@@ -20,6 +21,7 @@ export class Login {
         next: (response: any) => {
           this.authService.saveToken(response.access);
           console.log('Token guardado');
+          this.router.navigate(['/app/dashboard']);
         },
         error: (error: any) => {
           console.log('Error', error);
