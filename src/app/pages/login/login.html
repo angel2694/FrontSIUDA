@@ -9,8 +9,8 @@
           type="text"
           class="form-control"
           name="username"
-          [(ngModel)]="username"
-          (ngModelChange)="clearError()"
+          [ngModel]="username()"
+          (ngModelChange)="username.set($event); clearError()"
           required
         >
       </div>
@@ -21,18 +21,20 @@
           type="password"
           class="form-control"
           name="password"
-          [(ngModel)]="password"
-          (ngModelChange)="clearError()"
+          [ngModel]="password()"
+          (ngModelChange)="password.set($event); clearError()"
           required
         >
       </div>
 
-      <div *ngIf="errorMessage" class="alert alert-danger">
-        {{ errorMessage }}
-      </div>
+      @if (errorMessage()) {
+        <div class="alert alert-danger">
+          {{ errorMessage() }}
+        </div>
+      }
 
-      <button type="submit" class="btn btn-primary w-100" [disabled]="loading">
-            {{ loading ? 'Validando...' : 'Ingresar' }}
+      <button type="submit" class="btn btn-primary w-100" [disabled]="loading()">
+        {{ loading() ? 'Validando...' : 'Ingresar' }}
       </button>
     </form>
   </div>

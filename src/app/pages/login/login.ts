@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth';
 import { CommonModule } from '@angular/common';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -11,33 +12,37 @@ import { CommonModule } from '@angular/common';
   styleUrl: './login.css',
 })
 export class Login {
-  username = '';
-  password = '';
-  errorMessage = '';
-  loading = false;
+  username = signal('');
+  password = signal('');
+  errorMessage = signal('');
+  loading = signal(false);
 
-  
-  constructor(private authService: AuthService, private router: Router) {}
-  
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
   clearError() {
-    this.errorMessage = '';
+    this.errorMessage.set('');
   }
 
   login() {
-    this.errorMessage = '';
-    this.loading = true;
-    this.authService.login(this.username, this.password)
+    this.errorMessage.set('');
+    this.loading.set(true);
+
+    this.authService.login(this.username(), this.password())
+      .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (response: any) => {
-          this.loading = false;
           this.authService.saveToken(response.access);
-          console.log('Token guardado');
           this.router.navigate(['/app/dashboard']);
         },
         error: (error: any) => {
-          this.loading = false;
-          this.errorMessage = 'Credenciales inválidas';
+          const msg = error?.error?.detail
+            ?? error?.error?.non_field_errors?.[0]
+            ?? 'Credenciales inválidas';
+          this.errorMessage.set(msg);
         }
       });
-  } 
+  }
 }
