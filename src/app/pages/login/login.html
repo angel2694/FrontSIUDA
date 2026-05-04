@@ -10,6 +10,7 @@
           class="form-control"
           name="username"
           [(ngModel)]="username"
+          (ngModelChange)="clearError()"
           required
         >
       </div>
@@ -21,6 +22,7 @@
           class="form-control"
           name="password"
           [(ngModel)]="password"
+          (ngModelChange)="clearError()"
           required
         >
       </div>
@@ -29,8 +31,8 @@
         {{ errorMessage }}
       </div>
 
-      <button type="submit" class="btn btn-primary w-100">
-        Ingresar
+      <button type="submit" class="btn btn-primary w-100" [disabled]="loading">
+            {{ loading ? 'Validando...' : 'Ingresar' }}
       </button>
     </form>
   </div>

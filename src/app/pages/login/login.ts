@@ -14,27 +14,29 @@ export class Login {
   username = '';
   password = '';
   errorMessage = '';
+  loading = false;
 
+  
   constructor(private authService: AuthService, private router: Router) {}
+  
+  clearError() {
+    this.errorMessage = '';
+  }
 
   login() {
     this.errorMessage = '';
+    this.loading = true;
     this.authService.login(this.username, this.password)
       .subscribe({
         next: (response: any) => {
+          this.loading = false;
           this.authService.saveToken(response.access);
           console.log('Token guardado');
           this.router.navigate(['/app/dashboard']);
         },
         error: (error: any) => {
-          console.log('Error', error);
-          if (error.status === 401) {
-            this.errorMessage = 'Credenciales inválidas. Por favor, inténtalo de nuevo.';
-            this.router.navigate(['/login']);
-          } else {
-            this.errorMessage = 'Error al iniciar sesión. Por favor, inténtalo más tarde.';
-
-          }
+          this.loading = false;
+          this.errorMessage = 'Credenciales inválidas';
         }
       });
   } 
