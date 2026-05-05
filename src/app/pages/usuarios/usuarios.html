@@ -1,0 +1,58 @@
+<main class="main">
+
+  <div class="topbar">
+    <h1>Gestión de Usuarios</h1>
+  </div>
+
+  @if (mensaje()) {
+    <div class="alert success">{{ mensaje() }}</div>
+  }
+
+  @if (error()) {
+    <div class="alert danger">{{ error() }}</div>
+  }
+
+  @if (loading()) {
+    <p class="muted">Cargando usuarios...</p>
+  } @else {
+    <div class="panel">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Email</th>
+            <th>Estado</th>
+            <th>Rol</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (usuario of usuarios(); track usuario.id) {
+            <tr>
+              <td>{{ usuario.id }}</td>
+              <td>{{ usuario.username }}</td>
+              <td>{{ usuario.email }}</td>
+              <td>
+                <span class="badge" [class.green]="usuario.is_active" [class.red]="!usuario.is_active">
+                  {{ usuario.is_active ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td>
+                <select [(ngModel)]="usuario.role">
+                  @for (rol of roles; track rol) {
+                    <option [value]="rol">{{ rol }}</option>
+                  }
+                </select>
+              </td>
+              <td>
+                <button class="btn" (click)="cambiarRol(usuario.id, usuario.role)">Guardar</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+</main>

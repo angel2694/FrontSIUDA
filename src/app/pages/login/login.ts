@@ -35,6 +35,7 @@ export class Login {
       .subscribe({
         next: (response: any) => {
           this.authService.saveToken(response.access);
+          this.authService.saveRole(response.user.role);
           this.router.navigate(['/app/dashboard']);
         },
         error: (error: any) => {

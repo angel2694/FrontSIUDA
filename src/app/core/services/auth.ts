@@ -15,15 +15,32 @@ export class AuthService {
     return this.http.post(`${this.APIUrl}login/`, data);
   }
 
+  getUsuarios() {
+    return this.http.get<any[]>(`${this.APIUrl}users/`);
+  }
+
+  assignRole(id: number, role: string) {
+    return this.http.patch(`${this.APIUrl}users/${id}/role/`, { role });
+  }
+
   saveToken(token: string) {
     localStorage.setItem('access_token', token);
+  }
+
+  saveRole(role: string) {
+    localStorage.setItem('role', role);
   }
 
   getToken() {
     return localStorage.getItem('access_token');
   }
 
+  getRole() {
+    return localStorage.getItem('role');
+  }
+
   logout() {
     localStorage.removeItem('access_token');
+    localStorage.removeItem('role');
   }
 }
