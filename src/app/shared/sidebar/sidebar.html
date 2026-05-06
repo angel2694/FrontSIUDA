@@ -8,6 +8,9 @@
       <a routerLink="/app/inventario" routerLinkActive="active" class="nav-link">Inventario</a>
       <a routerLink="/app/ordenes" routerLinkActive="active" class="nav-link">Órdenes</a>
       <a routerLink="/app/recepcion" routerLinkActive="active" class="nav-link">Recepción</a>
+      <ng-container *ngIf="userRole === 'admin'">
+        <a routerLink="/app/usuarios" routerLinkActive="active" class="nav-link">Usuarios</a>
+      </ng-container>
     </li>
   </ul>
 </div>
