@@ -2,15 +2,12 @@
   <h5>SIUDA</h5>
 
   <ul class="nav flex-column">
-    <li class="nav-item">
-      <a routerLink="/app/dashboard" routerLinkActive="active" class="nav-link">Dashboard</a>
-      <a routerLink="/app/solicitudes" routerLinkActive="active" class="nav-link">Solicitudes</a>
-      <a routerLink="/app/inventario" routerLinkActive="active" class="nav-link">Inventario</a>
-      <a routerLink="/app/ordenes" routerLinkActive="active" class="nav-link">Órdenes</a>
-      <a routerLink="/app/recepcion" routerLinkActive="active" class="nav-link">Recepción</a>
-      <ng-container *ngIf="userRole === 'admin'">
-        <a routerLink="/app/usuarios" routerLinkActive="active" class="nav-link">Usuarios</a>
-      </ng-container>
-    </li>
+    @for (modulo of modulos; track modulo.id) {
+      <li class="nav-item">
+        <a [routerLink]="modulo.url" routerLinkActive="active" class="nav-link">
+          <i class="bi {{ modulo.icono }} me-2"></i>{{ modulo.nombre }}
+        </a>
+      </li>
+    }
   </ul>
 </div>

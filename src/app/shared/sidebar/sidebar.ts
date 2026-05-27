@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth';
+import { Modulo } from '../../core/interfaces/modulo';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,9 +11,9 @@ import { AuthService } from '../../core/services/auth';
   styleUrl: './sidebar.css',
 })
 export class Sidebar {
-  userRole: string | null = null;
+  modulos: Modulo[] = [];
 
   constructor(private authService: AuthService) {
-    this.userRole = this.authService.getRole();
-    }
+    this.modulos = this.authService.getModulos();
+  }
 }
