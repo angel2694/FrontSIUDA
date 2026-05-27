@@ -11,6 +11,8 @@ import { Ordenes } from './pages/ordenes/ordenes';
 import { Recepcion } from './pages/recepcion/recepcion';
 import { Usuarios } from './pages/usuarios/usuarios';
 import { Register } from './pages/register/register';
+import { Perfil } from './pages/perfil/perfil';
+import { CambiarPassword } from './pages/perfil/cambiar-password/cambiar-password';
 
 export const routes: Routes = [
   // publica
@@ -26,6 +28,8 @@ export const routes: Routes = [
       {path: 'ordenes', component: Ordenes},
       {path: 'recepcion', component: Recepcion},
       {path: 'usuarios', component: Usuarios, canActivate: [roleGuard(['admin'])]},
+      {path: 'perfil', component: Perfil},
+      {path: 'perfil/password', component: CambiarPassword}
      ]
    },
    //default

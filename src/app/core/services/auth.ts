@@ -60,4 +60,12 @@ export class AuthService {
   saveModulos(modulos: Modulo[]) {
     localStorage.setItem('modulos', JSON.stringify(modulos));
   }
+
+  getPerfil() {
+    return this.http.get(`${this.APIUrl}profile/`);
+  }
+
+  cambiarPassword(password_actual: string, password_nueva: string, password_nueva2: string) {
+    return this.http.patch(`${this.APIUrl}profile/password/`, { password_actual, password_nueva, password_nueva2 });
+  }
 }

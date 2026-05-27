@@ -1,0 +1,28 @@
+<div class="container py-4">
+  <div class="card shadow p-4" style="max-width: 500px;">
+    <h4 class="mb-4">Mi Perfil</h4>
+
+    @if (perfil()) {
+      <div class="mb-3">
+        <label class="fw-bold">Usuario:</label>
+        <p>{{ perfil().username }}</p>
+      </div>
+      <div class="mb-3">
+        <label class="fw-bold">Email:</label>
+        <p>{{ perfil().email }}</p>
+      </div>
+      <div class="mb-3">
+        <label class="fw-bold">Nombre:</label>
+        <p>{{ perfil().first_name }} {{ perfil().last_name }}</p>
+      </div>
+      <div class="mb-3">
+        <label class="fw-bold">Rol:</label>
+        <p>{{ perfil().role }}</p>
+      </div>
+
+      <a routerLink="/app/perfil/password" class="btn btn-outline-primary w-100">
+        Cambiar contraseña
+      </a>
+    }
+  </div>
+</div>

@@ -35,7 +35,7 @@ export class Register {
       .subscribe({
         next: () => {
           this.successMessage.set('Usuario registrado. Redirigiendo...');
-          setTimeout(() => this.router.navigate(['/login']), 1500);
+          setTimeout(() => this.router.navigate(['/app/usuarios']), 1500);
         },
         error: (error: any) => {
           const errors = error?.error;
