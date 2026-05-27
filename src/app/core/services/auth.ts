@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Modulo } from '../interfaces/modulo';
 
 @Injectable({
   providedIn: 'root',
@@ -47,5 +48,16 @@ export class AuthService {
 
   register(username: string, email: string, password: string, password2: string) {
     return this.http.post(`${this.APIUrl}register/`, { username, email, password, password2 });
+  }
+
+  getModulos(): Modulo[] {
+    const token = this.getToken();
+    if (!token) return [];
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.modulos ?? [];
+  }
+
+  saveModulos(modulos: Modulo[]) {
+    localStorage.setItem('modulos', JSON.stringify(modulos));
   }
 }
