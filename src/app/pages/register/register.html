@@ -1,0 +1,40 @@
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="card p-4 shadow" style="width: 100%; max-width: 420px;">
+    <h4 class="text-center mb-4">Crear cuenta</h4>
+
+    <div *ngIf="errorMessage()" class="alert alert-danger">{{ errorMessage() }}</div>
+    <div *ngIf="successMessage()" class="alert alert-success">{{ successMessage() }}</div>
+
+    <div class="mb-3">
+      <label class="form-label">Usuario</label>
+      <input type="text" class="form-control" [(ngModel)]="username" [ngModelOptions]="{standalone: true}"
+        (ngModelChange)="username.set($event)" [value]="username()" (input)="username.set($any($event.target).value)">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control"
+        [value]="email()" (input)="email.set($any($event.target).value)">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Contraseña</label>
+      <input type="password" class="form-control"
+        [value]="password()" (input)="password.set($any($event.target).value)">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Confirmar contraseña</label>
+      <input type="password" class="form-control"
+        [value]="password2()" (input)="password2.set($any($event.target).value)">
+    </div>
+
+    <button class="btn btn-primary w-100" (click)="register()" [disabled]="loading()">
+      {{ loading() ? 'Registrando...' : 'Registrarse' }}
+    </button>
+
+    <p class="text-center mt-3 mb-0">
+      ¿Ya tienes cuenta? <a routerLink="/login">Iniciar sesión</a>
+    </p>
+  </div>
+</div>

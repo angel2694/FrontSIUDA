@@ -10,11 +10,13 @@ import { Inventario } from './pages/inventario/inventario';
 import { Ordenes } from './pages/ordenes/ordenes';
 import { Recepcion } from './pages/recepcion/recepcion';
 import { Usuarios } from './pages/usuarios/usuarios';
+import { Register } from './pages/register/register';
 
 export const routes: Routes = [
   // publica
   { path: 'landing', component: Landing },
   { path: 'login', component: Login },
+  { path: 'register', component: Register },
   // protegida
   { path: 'app', component: MainLayout, canActivate: [authGuard],
     children: [

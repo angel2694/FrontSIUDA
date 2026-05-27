@@ -6,7 +6,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AuthService {
 
-  private readonly APIUrl = 'http://127.0.0.1:8000/api/auth/';
+  // private readonly APIUrl = 'http://127.0.0.1:8000/api/auth/';   //dev
+  private readonly APIUrl = 'http://65.108.155.118:8000/api/auth/'; //prod
 
   constructor(private http: HttpClient) {}
 
@@ -42,5 +43,9 @@ export class AuthService {
   logout() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('role');
+  }
+
+  register(username: string, email: string, password: string, password2: string) {
+    return this.http.post(`${this.APIUrl}register/`, { username, email, password, password2 });
   }
 }
