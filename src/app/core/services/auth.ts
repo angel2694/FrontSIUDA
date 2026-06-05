@@ -7,8 +7,8 @@ import { Modulo } from '../interfaces/modulo';
 })
 export class AuthService {
 
-  // private readonly APIUrl = 'http://127.0.0.1:8000/api/auth/';   //dev
-  private readonly APIUrl = 'http://65.108.155.118:8000/api/auth/'; //prod
+  private readonly APIUrl = 'http://127.0.0.1:8000/api/auth/';   //dev
+  // private readonly APIUrl = 'http://65.108.155.118:8000/api/auth/'; //prod
 
   constructor(private http: HttpClient) {}
 
@@ -67,5 +67,15 @@ export class AuthService {
 
   cambiarPassword(password_actual: string, password_nueva: string, password_nueva2: string) {
     return this.http.patch(`${this.APIUrl}profile/password/`, { password_actual, password_nueva, password_nueva2 });
+  }
+
+  solicitarReset(email: string) {
+    return this.http.post(`${this.APIUrl}password-reset/`, { email });
+  }
+
+  confirmarReset(uid: string, token: string, password_nueva: string, password_nueva2: string) {
+    return this.http.post(`${this.APIUrl}password-reset/confirm/`, {
+      uid, token, password_nueva, password_nueva2
+    });
   }
 }

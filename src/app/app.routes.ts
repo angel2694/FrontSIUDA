@@ -13,6 +13,8 @@ import { Usuarios } from './pages/usuarios/usuarios';
 import { Register } from './pages/register/register';
 import { Perfil } from './pages/perfil/perfil';
 import { CambiarPassword } from './pages/perfil/cambiar-password/cambiar-password';
+import { ForgotPassword } from './pages/forgot-password/forgot-password';
+import { ResetPassword } from './pages/reset-password/reset-password';
 
 export const routes: Routes = [
   // publica
@@ -32,6 +34,9 @@ export const routes: Routes = [
       {path: 'perfil/password', component: CambiarPassword}
      ]
    },
+   //publica
+  { path: 'forgot-password', component: ForgotPassword },
+  { path: 'reset-password', component: ResetPassword },
    //default
   { path: '', redirectTo: 'landing', pathMatch: 'full' }
 ];
