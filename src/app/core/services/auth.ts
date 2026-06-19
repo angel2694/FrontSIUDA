@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Modulo } from '../interfaces/modulo';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
 
-  private readonly APIUrl = 'http://127.0.0.1:8000/api/auth/';   //dev
+  // private readonly APIUrl = 'http://127.0.0.1:8000/api/auth/';   //dev
   // private readonly APIUrl = 'http://65.108.155.118:8000/api/auth/'; //prod
-
+  // private readonly APIUrl = 'https://backsiuda-1.onrender.com/api/auth/'; //prod2
+  private readonly APIUrl = `${environment.apiUrl}/auth/`;
+  
   constructor(private http: HttpClient) {}
 
   login(username: string, password: string) {
