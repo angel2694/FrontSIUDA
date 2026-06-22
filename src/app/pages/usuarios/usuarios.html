@@ -2,28 +2,24 @@
 
   <div class="topbar">
     <h1>Gestión de Usuarios</h1>
+    <a routerLink="/register" class="btn btn-success btn-sm">
+      <i class="bi bi-person-plus me-1"></i>Nuevo usuario
+    </a>
   </div>
 
   @if (mensaje()) {
-    <div class="alert success">{{ mensaje() }}</div>
+    <div class="alert alert-success">{{ mensaje() }}</div>
   }
-
   @if (error()) {
-    <div class="alert danger">{{ error() }}</div>
+    <div class="alert alert-danger">{{ error() }}</div>
   }
 
   @if (loading()) {
-    <p class="muted">Cargando usuarios...</p>
+    <p class="text-muted">Cargando usuarios...</p>
   } @else {
     <div class="panel">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4>Usuarios</h4>
-        <a routerLink="/register" class="btn btn-primary btn-sm">
-          <i class="bi bi-person-plus me-1"></i>Nuevo usuario
-        </a>
-      </div>
-      <table>
-        <thead>
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
           <tr>
             <th>ID</th>
             <th>Usuario</th>
@@ -40,19 +36,19 @@
               <td>{{ usuario.username }}</td>
               <td>{{ usuario.email }}</td>
               <td>
-                <span class="badge" [class.green]="usuario.is_active" [class.red]="!usuario.is_active">
+                <span class="badge" [class.bg-success]="usuario.is_active" [class.bg-danger]="!usuario.is_active">
                   {{ usuario.is_active ? 'Activo' : 'Inactivo' }}
                 </span>
               </td>
               <td>
-                <select [(ngModel)]="usuario.role">
+                <select class="form-select form-select-sm" [(ngModel)]="usuario.role">
                   @for (rol of roles; track rol) {
                     <option [value]="rol">{{ rol }}</option>
                   }
                 </select>
               </td>
               <td>
-                <button class="btn" (click)="cambiarRol(usuario.id, usuario.role)">Guardar</button>
+                <button class="btn btn-success btn-sm" (click)="cambiarRol(usuario.id, usuario.role)">Guardar</button>
               </td>
             </tr>
           }

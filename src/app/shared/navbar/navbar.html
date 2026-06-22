@@ -1,6 +1,13 @@
-<nav class="navbar bg-light px-3">
-  <span class="navbar-brand">SIUDA</span>
+<nav class="app-navbar">
+  <span class="fw-bold fs-5">SIUDA</span>
 
-  <button class="btn btn-sm btn-danger" (click)="logout()">
-    Cerrar sesión</button>
+  <div class="d-flex gap-2">
+    <button class="btn btn-sm btn-outline-light" (click)="toggleTheme()">
+      <i class="bi" [class.bi-moon-fill]="!isDark" [class.bi-sun-fill]="isDark"></i>
+      {{ isDark ? 'Modo claro' : 'Modo oscuro' }}
+    </button>
+    <button class="btn btn-sm btn-danger" (click)="logout()">
+      Cerrar sesión
+    </button>
+  </div>
 </nav>

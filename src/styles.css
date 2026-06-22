@@ -1,20 +1,115 @@
-/* You can add global styles to this file, and also import other style files */
 @import "bootstrap/dist/css/bootstrap.min.css";
 
+/* ===== LIGHT MODE ===== */
 :root {
-  --primary: #0d47a1;
-  --secondary: #1565c0;
-  --accent: #42a5f5;
-  --light: #f9f9f9;
-  --dark: #333;
-  --white: #fff;
-  --background: #1e3a5f;
-  --color: #333;
-  --dash-primary: #2e7d32;
-  --dash-secondary: #43a047;
-  --dash-bg: #f1f8f4;
-  --dash-text: #1b5e20;
-  --dash-white: #ffffff;
-  --dash-muted: #6b7280;
-  --dash-danger: #e53935;
+  --navbar-bg:     #145214;
+  --navbar-text:   #ffffff;
+  --sidebar-bg:    #1b5e20;
+  --sidebar-hover: #2e7d32;
+  --sidebar-text:  #ffffff;
+  --main-bg:       #f0f7f0;
+  --main-text:     #1a2e1a;
+  --panel-bg:      #ffffff;
+  --panel-shadow:  0 2px 8px rgba(0,0,0,0.08);
+  --border-accent: #43a047;
+}
+
+/* ===== DARK MODE ===== */
+body.dark {
+  --navbar-bg:     #0a1a0a;
+  --navbar-text:   #a5d6a7;
+  --sidebar-bg:    #112211;
+  --sidebar-hover: #1b5e20;
+  --sidebar-text:  #a5d6a7;
+  --main-bg:       #1a1a1a;
+  --main-text:     #c8e6c9;
+  --panel-bg:      #242424;
+  --panel-shadow:  0 2px 8px rgba(0,0,0,0.5);
+  --border-accent: #2e7d32;
+  background-color: var(--main-bg);
+  color: var(--main-text);
+}
+
+/* Bootstrap dark overrides */
+body.dark .table {
+  --bs-table-bg:           var(--panel-bg);
+  --bs-table-color:        var(--main-text);
+  --bs-table-border-color: #333;
+}
+body.dark .table-light {
+  --bs-table-bg:    #2e2e2e;
+  --bs-table-color: #aaaaaa;
+}
+body.dark .table-hover > tbody > tr:hover > * {
+  background-color: #2e2e2e;
+}
+body.dark .form-control,
+body.dark .form-select {
+  background-color: #2e2e2e;
+  color:            var(--main-text);
+  border-color:     #444;
+}
+body.dark .card {
+  background-color: var(--panel-bg);
+  color:            var(--main-text);
+  border-color:     #444;
+}
+body.dark label,
+body.dark .form-label,
+body.dark p {
+  color: var(--main-text);
+}
+
+/* ===== NAVBAR ===== */
+.app-navbar {
+  background:      var(--navbar-bg);
+  color:           var(--navbar-text);
+  padding:         10px 20px;
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+  border-bottom:   3px solid var(--border-accent);
+}
+
+/* ===== LAYOUT ===== */
+.main {
+  flex:       1;
+  padding:    24px;
+  background: var(--main-bg);
+  min-height: 100vh;
+  color:      var(--main-text);
+}
+
+.topbar {
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+  margin-bottom:   24px;
+}
+
+.main h1 {
+  font-size: 26px;
+  color:     var(--main-text);
+  margin:    0;
+}
+
+.panel {
+  background:    var(--panel-bg);
+  padding:       20px;
+  border-radius: 12px;
+  box-shadow:    var(--panel-shadow);
+  overflow-x:    auto;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+}
+
+body {
+  overflow-y: auto;
+}
+
+html, body {
+  overflow-x: hidden;
 }

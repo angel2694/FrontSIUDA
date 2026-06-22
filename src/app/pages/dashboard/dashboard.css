@@ -196,3 +196,7 @@
     grid-template-columns: 1fr;
   }
 }
+
+.main {
+  min-height: calc(100vh - 50px);
+}

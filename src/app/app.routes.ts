@@ -15,6 +15,7 @@ import { Perfil } from './pages/perfil/perfil';
 import { CambiarPassword } from './pages/perfil/cambiar-password/cambiar-password';
 import { ForgotPassword } from './pages/forgot-password/forgot-password';
 import { ResetPassword } from './pages/reset-password/reset-password';
+import { Area } from './pages/area/area/area';
 
 export const routes: Routes = [
   // publica
@@ -31,7 +32,8 @@ export const routes: Routes = [
       {path: 'recepcion', component: Recepcion},
       {path: 'usuarios', component: Usuarios, canActivate: [roleGuard(['admin'])]},
       {path: 'perfil', component: Perfil},
-      {path: 'perfil/password', component: CambiarPassword}
+      {path: 'perfil/password', component: CambiarPassword},
+      {path: 'area', component: Area}
      ]
    },
    //publica
