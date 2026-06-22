@@ -17,10 +17,7 @@ export class Login {
   errorMessage = signal('');
   loading = signal(false);
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   clearError() {
     this.errorMessage.set('');
@@ -35,6 +32,7 @@ export class Login {
       .subscribe({
         next: (response: any) => {
           this.authService.saveToken(response.access);
+          this.authService.saveRefreshToken(response.refresh);
           this.authService.saveRole(response.user.role);
           this.router.navigate(['/app/dashboard']);
         },

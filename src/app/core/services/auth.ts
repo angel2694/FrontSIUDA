@@ -8,9 +8,6 @@ import { environment } from '../../../environments/environment';
 })
 export class AuthService {
 
-  // private readonly APIUrl = 'http://127.0.0.1:8000/api/auth/';   //dev
-  // private readonly APIUrl = 'http://65.108.155.118:8000/api/auth/'; //prod
-  // private readonly APIUrl = 'https://backsiuda-1.onrender.com/api/auth/'; //prod2
   private readonly APIUrl = `${environment.apiUrl}/auth/`;
   
   constructor(private http: HttpClient) {}
@@ -47,6 +44,7 @@ export class AuthService {
   logout() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('role');
+    localStorage.removeItem('refresh_token');
   }
 
   register(username: string, email: string, password: string, password2: string) {
@@ -81,4 +79,18 @@ export class AuthService {
       uid, token, password_nueva, password_nueva2
     });
   }
+
+  saveRefreshToken(token: string) {
+    localStorage.setItem('refresh_token', token);
+  }
+  
+  getRefreshToken() {
+    return localStorage.getItem('refresh_token');
+  }
+
+  refreshToken() {
+    return this.http.post(`${environment.apiUrl}/token/refresh/`, {
+      refresh: this.getRefreshToken()
+    });
+}
 }
