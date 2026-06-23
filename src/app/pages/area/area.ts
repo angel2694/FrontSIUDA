@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { AreaService } from '../../../core/services/areas/area';
+import { AreaService } from '../../core/services/areas/area';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -14,7 +14,7 @@ export class Area implements OnInit {
   loading = signal(false);
   mensaje = signal('');
   error = signal('');
-  areas = signal<any[]>([]);  // lista, no un solo area 
+  areas = signal<any[]>([]);
   nombre = signal('');
   descripcion = signal('');
 
@@ -31,8 +31,8 @@ export class Area implements OnInit {
         this.areas.set(data);
         this.loading.set(false);
       },
-      error: (err) => {
-        this.error.set('Error loading area');
+      error: () => {
+        this.error.set('Error al cargar áreas');
         this.loading.set(false);
       },
     });
@@ -41,14 +41,14 @@ export class Area implements OnInit {
   crearArea() {
     const nuevaArea = { name: this.nombre(), description: this.descripcion() };
     this.areaService.createArea(nuevaArea).subscribe({
-      next: (data) => {
+      next: () => {
         this.mensaje.set('Área creada exitosamente');
         this.nombre.set('');
         this.descripcion.set('');
         this.loadArea();
       },
-      error: (err) => {
-        this.error.set('Error creating area');
+      error: () => {
+        this.error.set('Error al crear área');
       },
     });
   }

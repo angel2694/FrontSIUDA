@@ -15,7 +15,8 @@ import { Perfil } from './pages/perfil/perfil';
 import { CambiarPassword } from './pages/perfil/cambiar-password/cambiar-password';
 import { ForgotPassword } from './pages/forgot-password/forgot-password';
 import { ResetPassword } from './pages/reset-password/reset-password';
-import { Area } from './pages/area/area/area';
+import { Area } from './pages/area/area';
+import { Categoria } from './pages/categorias/categoria/categoria';
 
 export const routes: Routes = [
   // publica
@@ -33,7 +34,8 @@ export const routes: Routes = [
       {path: 'usuarios', component: Usuarios, canActivate: [roleGuard(['admin'])]},
       {path: 'perfil', component: Perfil},
       {path: 'perfil/password', component: CambiarPassword},
-      {path: 'area', component: Area}
+      {path: 'area', component: Area},
+      {path: 'categorias', component: Categoria}
      ]
    },
    //publica

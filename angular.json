@@ -8,7 +8,12 @@
   "projects": {
     "front": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": { "skipTests": true },
+        "@schematics/angular:service": { "skipTests": true },
+        "@schematics/angular:guard": { "skipTests": true },
+        "@schematics/angular:interceptor": { "skipTests": true }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
