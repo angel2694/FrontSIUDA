@@ -1,0 +1,94 @@
+<main class="main">
+
+  <div class="topbar">
+    <h1>Gestión de Productos</h1>
+  </div>
+
+  @if (mensaje()) {
+    <div class="alert alert-success">{{ mensaje() }}</div>
+  }
+  @if (error()) {
+    <div class="alert alert-danger">{{ error() }}</div>
+  }
+
+  <div class="panel mb-3">
+    <h5 class="mb-3">Nuevo Producto</h5>
+    <div class="row g-2">
+      <div class="col-md-3">
+        <input class="form-control" placeholder="Código *"
+          [value]="code()" (input)="code.set($any($event.target).value)">
+      </div>
+      <div class="col-md-5">
+        <input class="form-control" placeholder="Nombre *"
+          [value]="nombre()" (input)="nombre.set($any($event.target).value)">
+      </div>
+      <div class="col-md-4">
+        <input class="form-control" placeholder="Descripción"
+          [value]="descripcion()" (input)="descripcion.set($any($event.target).value)">
+      </div>
+      <div class="col-md-4">
+        <select class="form-select"
+          [value]="categoriaId()"
+          (change)="categoriaId.set(+$any($event.target).value)">
+          <option value="0" disabled>Categoría *</option>
+          @for (c of categorias(); track c.id) {
+            <option [value]="c.id">{{ c.name }}</option>
+          }
+        </select>
+      </div>
+      <div class="col-md-4">
+        <select class="form-select"
+          [value]="unidadId()"
+          (change)="unidadId.set(+$any($event.target).value)">
+          <option value="0" disabled>Unidad de medida *</option>
+          @for (u of unidades(); track u.id) {
+            <option [value]="u.id">{{ u.name }} ({{ u.abbreviation }})</option>
+          }
+        </select>
+      </div>
+      <div class="col-md-4">
+        <input class="form-control" type="number" placeholder="Stock mínimo *"
+          [value]="minStock()" (input)="minStock.set(+$any($event.target).value)">
+      </div>
+    </div>
+    <button class="btn btn-success btn-sm mt-3" (click)="crearProducto()">
+      <i class="bi bi-plus me-1"></i>Guardar
+    </button>
+  </div>
+
+  @if (loading()) {
+    <p class="text-muted">Cargando productos...</p>
+  } @else {
+    <div class="panel">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Código</th>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Unidad</th>
+            <th>Stock mín.</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of productos; track p.id) {
+            <tr>
+              <td>{{ p.code }}</td>
+              <td>{{ p.name }}</td>
+              <td>{{ getNombreCategoria(p.category) }}</td>
+              <td>{{ getNombreUnidad(p.unit_measure) }}</td>
+              <td>{{ p.min_stock }}</td>
+              <td>
+                <span class="badge" [class.bg-success]="p.is_active" [class.bg-danger]="!p.is_active">
+                  {{ p.is_active ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+</main>

@@ -1,5 +1,5 @@
 import { Component, signal, OnInit } from '@angular/core';
-import { CategoriaService } from '../../../core/services/categorias/categoria';
+import { CategoriaService } from '../../core/services/categorias/categoria';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 

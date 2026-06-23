@@ -16,7 +16,8 @@ import { CambiarPassword } from './pages/perfil/cambiar-password/cambiar-passwor
 import { ForgotPassword } from './pages/forgot-password/forgot-password';
 import { ResetPassword } from './pages/reset-password/reset-password';
 import { Area } from './pages/area/area';
-import { Categoria } from './pages/categorias/categoria/categoria';
+import { Categoria } from './pages/categorias/categoria';
+import { Producto } from './pages/productos/producto';
 import { Unidad } from './pages/unidades/unidad';
 import { Proveedor } from './pages/proveedores/proveedor';
 
@@ -39,7 +40,8 @@ export const routes: Routes = [
       {path: 'area', component: Area},
       {path: 'categorias', component: Categoria},
       {path: 'unidades', component: Unidad},
-      {path: 'proveedores', component: Proveedor}
+      {path: 'proveedores', component: Proveedor},
+      {path: 'productos', component: Producto}
      ]
    },
    //publica
