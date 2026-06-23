@@ -1,99 +1,60 @@
 <main class="main">
 
-<!-- HEADER -->
-<div class="topbar">
-  <h1>Panel Principal</h1>
-  <span class="date">22 de abril, 2026</span>
-</div>
-
-<!-- CARDS -->
-<div class="cards">
-
-  <div class="card">
-    <h4>Solicitudes Pendientes</h4>
-    <p class="number">7</p>
-    <span class="sub">+2 desde ayer</span>
+  <div class="topbar">
+    <h1>Panel Principal</h1>
+    <span class="date">{{ today }}</span>
   </div>
 
-  <div class="card">
-    <h4>Productos en Stock</h4>
-    <p class="number">143</p>
-    <span class="sub green">Stock saludable</span>
-  </div>
-
-  <div class="card">
-    <h4>Órdenes de Compra</h4>
-    <p class="number">4</p>
-    <span class="sub">En proceso</span>
-  </div>
-
-  <div class="card danger">
-    <h4>Stock Crítico</h4>
-    <p class="number">3</p>
-    <span class="sub red">Requiere atención</span>
-  </div>
-
-</div>
-
-<!-- GRID -->
-<div class="grid">
-
-  <!-- SOLICITUDES -->
-  <div class="panel">
-    <div class="panel-header">
-      <h3>Solicitudes Recientes</h3>
-      <span class="link">Ver todas →</span>
+  <!-- CARDS -->
+  <div class="cards">
+    <div class="card">
+      <h4>Productos</h4>
+      <p class="number">{{ totalProductos }}</p>
+      <span class="sub">En catálogo</span>
     </div>
-
-    <div class="item">
-      <span>SOL-2026-041</span>
-      <span class="badge orange">Pendiente</span>
+    <div class="card">
+      <h4>Categorías</h4>
+      <p class="number">{{ totalCategorias }}</p>
+      <span class="sub green">Registradas</span>
     </div>
-
-    <div class="item">
-      <span>SOL-2026-040</span>
-      <span class="badge green">Aprobado</span>
+    <div class="card">
+      <h4>Proveedores</h4>
+      <p class="number">{{ totalProveedores }}</p>
+      <span class="sub">Activos</span>
     </div>
-
-    <div class="item">
-      <span>SOL-2026-039</span>
-      <span class="badge blue">En proceso</span>
+    <div class="card">
+      <h4>Proformas</h4>
+      <p class="number">{{ totalProformas }}</p>
+      <span class="sub">Total registradas</span>
     </div>
   </div>
 
-  <!-- STOCK -->
-  <div class="panel">
-    <div class="panel-header">
-      <h3>Stock Disponible</h3>
-      <span class="link">Ver kardex →</span>
+  <!-- GRÁFICOS -->
+  <div class="grid">
+    <div class="panel">
+      <apx-chart
+        [series]="donaOptions.series"
+        [chart]="donaOptions.chart"
+        [labels]="donaOptions.labels"
+        [colors]="donaOptions.colors"
+        [legend]="donaOptions.legend"
+        [title]="donaOptions.title"
+        [plotOptions]="donaOptions.plotOptions"
+        [noData]="donaOptions.noData">
+      </apx-chart>
     </div>
-
-    <div class="stock-item">
-      <span>Papel A4</span>
-      <div class="bar">
-        <div class="fill green" style="width: 80%"></div>
-      </div>
-      <span>82</span>
+    <div class="panel">
+      <apx-chart
+        [series]="barOptions.series"
+        [chart]="barOptions.chart"
+        [colors]="barOptions.colors"
+        [xaxis]="barOptions.xaxis"
+        [title]="barOptions.title"
+        [plotOptions]="barOptions.plotOptions"
+        [dataLabels]="barOptions.dataLabels"
+        [noData]="barOptions.noData">
+      </apx-chart>
     </div>
-
-    <div class="stock-item">
-      <span>Lapiceros</span>
-      <div class="bar">
-        <div class="fill orange" style="width: 30%"></div>
-      </div>
-      <span>22</span>
-    </div>
-
-    <div class="stock-item">
-      <span>Tóner</span>
-      <div class="bar">
-        <div class="fill red" style="width: 10%"></div>
-      </div>
-      <span>2</span>
-    </div>
-
   </div>
 
-</div>
-
-  </main>
+</main>
