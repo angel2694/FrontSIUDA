@@ -34,7 +34,11 @@
       }
 
       <button type="submit" class="btn btn-primary w-100" [disabled]="loading()">
-        {{ loading() ? 'Validando...' : 'Ingresar' }}
+        @if (loading()) {
+          <span class="spinner-border spinner-border-sm me-2"></span>Validando...
+        } @else {
+          Ingresar
+        }
       </button>
 
     </form>

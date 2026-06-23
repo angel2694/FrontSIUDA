@@ -1,100 +1,129 @@
-<header>
-  <div class="logo">SIUDA</div>
-  <nav>
-    <a href="#">Inicio</a>
-    <a href="#">Servicios</a>
-    <a href="#">Procesos</a>
-    <a routerLink="/login">Iniciar sesión</a>
+<header class="landing-header">
+  <div class="landing-logo">
+    <i class="bi bi-boxes me-2"></i>SIUDA
+  </div>
+  <nav class="landing-nav">
+    <a href="#servicios">Servicios</a>
+    <a href="#procesos">Procesos</a>
+    <a routerLink="/login" class="btn-login">Iniciar sesión</a>
   </nav>
 </header>
 
+<!-- HERO -->
 <section class="hero">
-  <div class="slides">
-    <div 
-      class="slide"
-      *ngFor="let slide of slides; let i = index"
-      [class.active]="i === currentIndex"
-      [style.background-image]="'url(' + slide + ')'"
-    >
+  @for (slide of slides; track $index) {
+    <div class="slide" [class.active]="$index === currentIndex" [style.background-image]="getSlideStyle(slides[$index])">
       <div class="overlay">
-        <h1>{{ titles[i] }}</h1>
-        <p>{{ descriptions[i] }}</p>
-        <button>Ver más</button>
+        <div class="hero-badge">Sistema de Abastecimiento</div>
+        <h1>{{ titles[$index] }}</h1>
+        <p>{{ descriptions[$index] }}</p>
+        <a routerLink="/login" class="btn-hero">Acceder al sistema</a>
       </div>
     </div>
-  </div>
-
+  }
   <button class="prev" (click)="prevSlide()">&#10094;</button>
   <button class="next" (click)="nextSlide()">&#10095;</button>
+  <div class="slide-dots">
+    @for (slide of slides; track $index) {
+      <span class="dot" [class.active]="$index === currentIndex" (click)="currentIndex = $index"></span>
+    }
+  </div>
 </section>
 
-<section class="services fade-in">
+<!-- SERVICIOS -->
+<section class="services fade-in" id="servicios">
   <div class="container">
-    <h2>Nuestros Servicios</h2>
+    <div class="section-label">Nuestros Servicios</div>
+    <h2>Todo lo que necesitas en un solo lugar</h2>
     <div class="cards">
       <div class="card">
+        <div class="card-icon"><i class="bi bi-cart-check"></i></div>
         <h3>Compras Públicas</h3>
-        <p>Gestión de adquisiciones de bienes y servicios.</p>
+        <p>Gestión centralizada de adquisiciones de bienes y servicios con total transparencia.</p>
       </div>
       <div class="card">
-        <h3>Logística</h3>
-        <p>Control eficiente de almacenes y distribución.</p>
+        <div class="card-icon"><i class="bi bi-building"></i></div>
+        <h3>Control de Almacén</h3>
+        <p>Seguimiento en tiempo real del inventario, entradas y salidas de materiales.</p>
       </div>
       <div class="card">
-        <h3>Contrataciones</h3>
-        <p>Procesos transparentes y eficientes.</p>
+        <div class="card-icon"><i class="bi bi-file-earmark-text"></i></div>
+        <h3>Gestión de Proformas</h3>
+        <p>Registro y evaluación de proformas de proveedores de forma rápida y organizada.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="process fade-in">
+<!-- PROCESOS -->
+<section class="process fade-in" id="procesos">
   <div class="container">
-    <h2>¿Cómo trabajamos?</h2>
+    <div class="section-label light">¿Cómo funciona?</div>
+    <h2>Proceso de abastecimiento</h2>
     <div class="steps">
-      <div class="step">Solicitud</div>
-      <div class="step">Evaluación</div>
-      <div class="step">Adquisición</div>
-      <div class="step">Entrega</div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-label">Solicitud</div>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-label">Evaluación</div>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-label">Adquisición</div>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-label">Entrega</div>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- CTA -->
 <section class="cta fade-in">
   <div class="container">
-    <h2>Trabaja con Nosotros</h2>
-    <button (click)="openModal()">Contáctanos</button>
+    <h2>¿Listo para optimizar tu gestión?</h2>
+    <p>Accede al sistema y lleva el control de tus recursos universitarios.</p>
+    <div class="cta-buttons">
+      <a routerLink="/login" class="btn-cta-primary">Iniciar sesión</a>
+      <button class="btn-cta-outline" (click)="openModal()">Contáctanos</button>
+    </div>
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
-  <p>© 2026 Unidad de Abastecimiento</p>
+  <div class="footer-content">
+    <div class="footer-logo"><i class="bi bi-boxes me-2"></i>SIUDA</div>
+    <p>Sistema de Gestión de Abastecimiento — Universidad</p>
+    <p class="footer-copy">© 2026 Unidad de Abastecimiento. Todos los derechos reservados.</p>
+  </div>
 </footer>
 
 <!-- MODAL -->
 <div class="modal" [class.show]="modalOpen">
   <div class="modal-content">
-
     <span class="close" (click)="closeModal()">&times;</span>
-
+    <h4 class="mb-3">Contáctanos</h4>
     <form class="contact-form" (ngSubmit)="enviar()">
       <div class="form-group">
         <label>Nombre</label>
-        <input type="text" [(ngModel)]="form.nombre" name="nombre" required>
+        <input class="form-control" type="text" [(ngModel)]="form.nombre" name="nombre" required>
       </div>
-
       <div class="form-group">
         <label>Correo</label>
-        <input type="email" [(ngModel)]="form.correo" name="correo" required>
+        <input class="form-control" type="email" [(ngModel)]="form.correo" name="correo" required>
       </div>
-
       <div class="form-group">
         <label>Mensaje</label>
-        <textarea rows="5" [(ngModel)]="form.mensaje" name="mensaje" required></textarea>
+        <textarea class="form-control" rows="4" [(ngModel)]="form.mensaje" name="mensaje" required></textarea>
       </div>
-
-      <button type="submit">Enviar</button>
+      <button type="submit" class="btn-submit">Enviar mensaje</button>
     </form>
-
   </div>
 </div>

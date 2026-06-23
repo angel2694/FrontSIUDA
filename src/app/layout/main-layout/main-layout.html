@@ -1,10 +1,15 @@
 <app-navbar></app-navbar>
 
+@if (navigating()) {
+  <div class="nav-spinner-overlay">
+    <div class="spinner-border text-success" style="width:3rem;height:3rem;"></div>
+  </div>
+}
+
 <div class="d-flex layout-body">
-  <app-sidebar></app-sidebar>   
+  <app-sidebar></app-sidebar>
 
   <div class="flex-grow-1 p-3">
     <router-outlet></router-outlet>
   </div>
-  <!-- <h1>opciones</h1> -->
 </div>

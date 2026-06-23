@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-landing',
@@ -13,11 +13,7 @@ import { RouterModule } from '@angular/router';
 export class Landing implements OnInit {
   currentIndex = 0;
 
-  slides = [
-    'imagen1.jpg',
-    'imagen2.jpg',
-    'imagen3.jpg'
-  ];
+  slides = ['imagen1.jpg', 'imagen2.jpg', 'imagen3.jpg'];
 
   titles = [
     'Gestión eficiente de recursos',
@@ -33,24 +29,20 @@ export class Landing implements OnInit {
 
   modalOpen = false;
 
-  form = {
-    nombre: '',
-    correo: '',
-    mensaje: ''
-  };
+  form = { nombre: '', correo: '', mensaje: '' };
+
+  constructor(private sanitizer: DomSanitizer) {}
+
+  getSlideStyle(img: string): SafeStyle {
+    return this.sanitizer.bypassSecurityTrustStyle(`url(${img})`);
+  }
 
   ngOnInit() {
-    // slider automático
-    setInterval(() => {
-      this.nextSlide();
-    }, 15000);
+    setInterval(() => this.nextSlide(), 15000);
 
-    // animaciones scroll
     window.addEventListener('scroll', () => {
-      const elements = document.querySelectorAll('.fade-in');
-      elements.forEach((el: any) => {
-        const pos = el.getBoundingClientRect().top;
-        if (pos < window.innerHeight - 100) {
+      document.querySelectorAll('.fade-in').forEach((el: any) => {
+        if (el.getBoundingClientRect().top < window.innerHeight - 100) {
           el.classList.add('show');
         }
       });
@@ -65,13 +57,8 @@ export class Landing implements OnInit {
     this.currentIndex = (this.currentIndex - 1 + this.slides.length) % this.slides.length;
   }
 
-  openModal() {
-    this.modalOpen = true;
-  }
-
-  closeModal() {
-    this.modalOpen = false;
-  }
+  openModal() { this.modalOpen = true; }
+  closeModal() { this.modalOpen = false; }
 
   enviar() {
     alert('Mensaje enviado correctamente');
