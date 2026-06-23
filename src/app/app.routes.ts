@@ -17,6 +17,7 @@ import { ForgotPassword } from './pages/forgot-password/forgot-password';
 import { ResetPassword } from './pages/reset-password/reset-password';
 import { Area } from './pages/area/area';
 import { Categoria } from './pages/categorias/categoria/categoria';
+import { Unidad } from './pages/unidades/unidad';
 
 export const routes: Routes = [
   // publica
@@ -35,7 +36,8 @@ export const routes: Routes = [
       {path: 'perfil', component: Perfil},
       {path: 'perfil/password', component: CambiarPassword},
       {path: 'area', component: Area},
-      {path: 'categorias', component: Categoria}
+      {path: 'categorias', component: Categoria},
+      {path: 'unidades', component: Unidad}
      ]
    },
    //publica
