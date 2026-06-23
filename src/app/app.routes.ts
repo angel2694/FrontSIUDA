@@ -20,6 +20,7 @@ import { Categoria } from './pages/categorias/categoria';
 import { Producto } from './pages/productos/producto';
 import { Unidad } from './pages/unidades/unidad';
 import { Proveedor } from './pages/proveedores/proveedor';
+import { Proforma } from './pages/proformas/proforma';
 
 export const routes: Routes = [
   // publica
@@ -41,7 +42,8 @@ export const routes: Routes = [
       {path: 'categorias', component: Categoria},
       {path: 'unidades', component: Unidad},
       {path: 'proveedores', component: Proveedor},
-      {path: 'productos', component: Producto}
+      {path: 'productos', component: Producto},
+      {path: 'proformas', component: Proforma}
      ]
    },
    //publica
