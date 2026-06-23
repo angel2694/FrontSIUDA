@@ -72,6 +72,10 @@ body.dark p {
 }
 
 /* ===== LAYOUT ===== */
+.layout-body {
+  min-height: calc(100vh - 53px);
+}
+
 .main {
   flex:       1;
   padding:    24px;
