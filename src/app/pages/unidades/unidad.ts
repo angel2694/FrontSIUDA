@@ -61,9 +61,16 @@ export class Unidad implements OnInit {
   onBusqueda(val: string) { this.busqueda = val; this.pagina = 1; }
 
   private validar(): boolean {
-    if (!this.nombre().trim()) { this.alert.error('El nombre de la unidad es obligatorio.'); return false; }
-    if (!this.abreviatura().trim()) { this.alert.error('La abreviatura es obligatoria.'); return false; }
-    if (this.abreviatura().trim().length > 10) { this.alert.error('La abreviatura no puede superar 10 caracteres.'); return false; }
+    const n = this.nombre().trim();
+    if (!n) { this.alert.error('El nombre de la unidad es obligatorio.'); return false; }
+    if (n.length < 2) { this.alert.error('El nombre debe tener al menos 2 caracteres.'); return false; }
+    if (n.length > 50) { this.alert.error('El nombre no puede superar los 50 caracteres.'); return false; }
+    if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\-]+$/.test(n)) { this.alert.error('El nombre solo puede contener letras, espacios y guiones.'); return false; }
+    if (/\s{2,}/.test(n)) { this.alert.error('El nombre no puede tener espacios consecutivos.'); return false; }
+    const a = this.abreviatura().trim();
+    if (!a) { this.alert.error('La abreviatura es obligatoria.'); return false; }
+    if (a.length > 10) { this.alert.error('La abreviatura no puede superar 10 caracteres.'); return false; }
+    if (!/^[a-zA-Z0-9\.\-]+$/.test(a)) { this.alert.error('La abreviatura solo puede contener letras, números, puntos y guiones.'); return false; }
     return true;
   }
 

@@ -82,25 +82,32 @@ export class Dashboard implements OnInit {
   }
 
   buildDonaChart(proformas: any[]) {
-    const pendiente = proformas.filter(p => p.status === 'pendiente').length;
-    const aprobada = proformas.filter(p => p.status === 'aprobada').length;
-    const rechazada = proformas.filter(p => p.status === 'rechazada').length;
+    const conteo: Record<string, number> = {};
+    for (const p of proformas) {
+      conteo[p.status] = (conteo[p.status] ?? 0) + 1;
+    }
+    const estados = Object.keys(conteo);
     this.donaOptions = {
       ...this.donaOptions,
-      series: [pendiente, aprobada, rechazada],
-      labels: [`Pendiente (${pendiente})`, `Aprobada (${aprobada})`, `Rechazada (${rechazada})`]
+      series: estados.map(e => conteo[e]),
+      labels: estados.map(e => `${e} (${conteo[e]})`)
     };
   }
-
   buildBarChart(productos: any[], categorias: any[]) {
-    const counts = categorias.map(c => ({
-      name: c.name,
-      count: productos.filter(p => p.category === c.id).length
-    }));
+    const catMap: Record<number, string> = {};
+    for (const c of categorias) catMap[c.id] = c.name;
+
+    const conteo: Record<string, number> = {};
+    for (const p of productos) {
+      const nombre = catMap[p.category] ?? `Cat. ${p.category}`;
+      conteo[nombre] = (conteo[nombre] ?? 0) + 1;
+    }
+
+    const nombres = Object.keys(conteo);
     this.barOptions = {
       ...this.barOptions,
-      series: [{ name: 'Productos', data: counts.map(c => c.count) as any[] }],
-      xaxis: { categories: counts.map(c => c.name) }
+      series: [{ name: 'Productos', data: nombres.map(n => conteo[n]) as any[] }],
+      xaxis: { categories: nombres }
     };
   }
 }

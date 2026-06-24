@@ -87,12 +87,20 @@ export class Producto implements OnInit {
   }
 
   private validar(): boolean {
-    if (!this.code().trim()) { this.alert.error('El código del producto es obligatorio.'); return false; }
-    if (!this.nombre().trim()) { this.alert.error('El nombre del producto es obligatorio.'); return false; }
-    if (this.nombre().trim().length < 2) { this.alert.error('El nombre debe tener al menos 2 caracteres.'); return false; }
+    const c = this.code().trim();
+    if (!c) { this.alert.error('El código del producto es obligatorio.'); return false; }
+    if (c.length > 50) { this.alert.error('El código no puede superar los 50 caracteres.'); return false; }
+    if (!/^[a-zA-Z0-9\-\_]+$/.test(c)) { this.alert.error('El código solo puede contener letras, números, guiones y guiones bajos.'); return false; }
+    const n = this.nombre().trim();
+    if (!n) { this.alert.error('El nombre del producto es obligatorio.'); return false; }
+    if (n.length < 2) { this.alert.error('El nombre debe tener al menos 2 caracteres.'); return false; }
+    if (n.length > 200) { this.alert.error('El nombre no puede superar los 200 caracteres.'); return false; }
+    if (/[<>"'\\]/.test(n)) { this.alert.error('El nombre contiene caracteres no permitidos.'); return false; }
+    if (/\s{2,}/.test(n)) { this.alert.error('El nombre no puede tener espacios consecutivos.'); return false; }
     if (this.categoriaId() === 0) { this.alert.error('Debe seleccionar una categoría.'); return false; }
     if (this.unidadId() === 0) { this.alert.error('Debe seleccionar una unidad de medida.'); return false; }
     if (this.minStock() < 0) { this.alert.error('El stock mínimo no puede ser negativo.'); return false; }
+    if (this.minStock() > 999999) { this.alert.error('El stock mínimo ingresado es demasiado alto.'); return false; }
     return true;
   }
 

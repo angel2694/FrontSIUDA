@@ -61,8 +61,12 @@ export class Categoria implements OnInit {
   onBusqueda(val: string) { this.busqueda = val; this.pagina = 1; }
 
   private validar(): boolean {
-    if (!this.nombre().trim()) { this.alert.error('El nombre de la categoría es obligatorio.'); return false; }
-    if (this.nombre().trim().length < 2) { this.alert.error('El nombre debe tener al menos 2 caracteres.'); return false; }
+    const n = this.nombre().trim();
+    if (!n) { this.alert.error('El nombre de la categoría es obligatorio.'); return false; }
+    if (n.length < 2) { this.alert.error('El nombre debe tener al menos 2 caracteres.'); return false; }
+    if (n.length > 100) { this.alert.error('El nombre no puede superar los 100 caracteres.'); return false; }
+    if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\-]+$/.test(n)) { this.alert.error('El nombre solo puede contener letras, espacios y guiones.'); return false; }
+    if (/\s{2,}/.test(n)) { this.alert.error('El nombre no puede tener espacios consecutivos.'); return false; }
     return true;
   }
 
