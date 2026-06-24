@@ -6,6 +6,7 @@ import { ProductoService } from '../../core/services/productos/producto';
 import { CategoriaService } from '../../core/services/categorias/categoria';
 import { ProveedorService } from '../../core/services/proveedores/proveedor';
 import { ProformaService } from '../../core/services/proformas/proforma';
+import { AuthService } from '../../core/services/auth/auth';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,6 +20,7 @@ export class Dashboard implements OnInit {
   totalCategorias = 0;
   totalProformas = 0;
   today = new Date().toLocaleDateString('es-PE', { year: 'numeric', month: 'long', day: 'numeric' });
+  username = '';
 
   // Gráfico de dona — proformas por estado
   donaOptions: any = {
@@ -49,8 +51,11 @@ export class Dashboard implements OnInit {
     private categoriaService: CategoriaService,
     private proveedorService: ProveedorService,
     private proformaService: ProformaService,
-    private cdr: ChangeDetectorRef
-  ) {}
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService
+  ) {
+    this.username = this.authService.getUsername();
+  }
 
   ngOnInit() {
     forkJoin({

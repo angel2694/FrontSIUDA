@@ -58,6 +58,13 @@ export class AuthService {
     return payload.modulos ?? [];
   }
 
+  getUsername(): string {
+    const token = this.getToken();
+    if (!token) return '';
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.username ?? '';
+  }
+
   saveModulos(modulos: Modulo[]) {
     localStorage.setItem('modulos', JSON.stringify(modulos));
   }
