@@ -2,7 +2,14 @@
   <div class="card shadow p-4" style="max-width: 500px;">
     <h4 class="mb-4">Mi Perfil</h4>
 
-    @if (perfil()) {
+    @if (mensaje()) {
+      <div class="alert alert-success">{{ mensaje() }}</div>
+    }
+    @if (error()) {
+      <div class="alert alert-danger">{{ error() }}</div>
+    }
+
+    @if (perfil() && !editando()) {
       <div class="mb-3">
         <label class="fw-bold">Usuario:</label>
         <p>{{ perfil().username }}</p>
@@ -20,9 +27,30 @@
         <p>{{ perfil().role }}</p>
       </div>
 
-      <a routerLink="/app/perfil/password" class="btn btn-outline-primary w-100">
-        Cambiar contraseña
-      </a>
+      <div class="d-flex gap-2">
+        <button class="btn btn-success flex-fill" (click)="iniciarEdicion()">Editar perfil</button>
+        <a routerLink="/app/perfil/password" class="btn btn-outline-primary flex-fill">Cambiar contraseña</a>
+      </div>
+    }
+
+    @if (editando()) {
+      <div class="mb-3">
+        <label class="form-label fw-bold">Nombre</label>
+        <input class="form-control" [(ngModel)]="form.first_name" placeholder="Nombre">
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Apellido</label>
+        <input class="form-control" [(ngModel)]="form.last_name" placeholder="Apellido">
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Email</label>
+        <input class="form-control" type="email" [(ngModel)]="form.email" placeholder="Email">
+      </div>
+
+      <div class="d-flex gap-2">
+        <button class="btn btn-success flex-fill" (click)="guardar()">Guardar</button>
+        <button class="btn btn-secondary flex-fill" (click)="cancelar()">Cancelar</button>
+      </div>
     }
   </div>
 </div>

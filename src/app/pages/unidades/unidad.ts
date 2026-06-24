@@ -17,7 +17,7 @@ export class Unidad implements OnInit {
   abreviatura = signal('');
   busqueda = '';
   pagina = 1;
-  porPagina = 5;
+  porPagina = 10;
   sortField = '';
   sortAsc = true;
 

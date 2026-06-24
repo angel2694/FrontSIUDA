@@ -73,6 +73,10 @@ export class AuthService {
     return this.http.get(`${this.APIUrl}profile/`);
   }
 
+  actualizarPerfil(data: { first_name: string; last_name: string; email: string }) {
+    return this.http.patch(`${this.APIUrl}profile/`, data);
+  }
+
   cambiarPassword(password_actual: string, password_nueva: string, password_nueva2: string) {
     return this.http.patch(`${this.APIUrl}profile/password/`, { password_actual, password_nueva, password_nueva2 });
   }

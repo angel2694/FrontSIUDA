@@ -21,7 +21,7 @@ export class Proveedor implements OnInit {
   direccion = signal('');
   busqueda = '';
   pagina = 1;
-  porPagina = 5;
+  porPagina = 10;
   sortField = '';
   sortAsc = true;
 

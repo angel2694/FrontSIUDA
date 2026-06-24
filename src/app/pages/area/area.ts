@@ -17,7 +17,7 @@ export class Area implements OnInit {
   descripcion = signal('');
   busqueda = '';
   pagina = 1;
-  porPagina = 5;
+  porPagina = 10;
   sortField = '';
   sortAsc = true;
 
