@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ProformaService } from '../../core/services/proformas/proforma';
 import { ProveedorService } from '../../core/services/proveedores/proveedor';
 import { ProductoService } from '../../core/services/productos/producto';
+import { AlertService } from '../../core/services/alert/alert';
 
 @Component({
   selector: 'app-proforma',
@@ -16,19 +17,20 @@ export class Proforma implements OnInit {
   proveedores = signal<any[]>([]);
   productos = signal<any[]>([]);
   loading = signal(false);
-  mensaje = signal('');
-  error = signal('');
-
   proveedorId = signal(0);
   fecha = signal('');
   status = signal('pendiente');
   notas = signal('');
   items = signal<{product: number, quantity: number, unit_price: number}[]>([]);
+  busqueda = '';
+  pagina = 1;
+  porPagina = 5;
 
   constructor(
     private proformaService: ProformaService,
     private proveedorService: ProveedorService,
-    private productoService: ProductoService
+    private productoService: ProductoService,
+    private alert: AlertService
   ) {}
 
   ngOnInit() {
@@ -37,11 +39,29 @@ export class Proforma implements OnInit {
     this.productoService.getProductos().subscribe(data => this.productos.set(data as any[]));
   }
 
+  get filtrado() {
+    const b = this.busqueda.toLowerCase();
+    return b ? this.proformas.filter(p =>
+      p.status?.toLowerCase().includes(b) || p.date?.includes(b)
+    ) : this.proformas;
+  }
+
+  get paginado() {
+    const inicio = (this.pagina - 1) * this.porPagina;
+    return this.filtrado.slice(inicio, inicio + this.porPagina);
+  }
+
+  get totalPaginas() {
+    return Math.ceil(this.filtrado.length / this.porPagina);
+  }
+
+  onBusqueda(val: string) { this.busqueda = val; this.pagina = 1; }
+
   loadProformas() {
     this.loading.set(true);
     this.proformaService.getProformas().subscribe({
       next: (data) => { this.proformas = data; this.loading.set(false); },
-      error: () => { this.error.set('Error al cargar proformas'); this.loading.set(false); }
+      error: () => { this.alert.error('Error al cargar proformas'); this.loading.set(false); }
     });
   }
 
@@ -51,10 +71,6 @@ export class Proforma implements OnInit {
 
   eliminarItem(index: number) {
     this.items.update(list => list.filter((_, i) => i !== index));
-  }
-
-  calcularTotal(item: any): number {
-    return item.quantity * item.unit_price;
   }
 
   calcularTotalGeneral(): number {
@@ -75,23 +91,18 @@ export class Proforma implements OnInit {
 
   crearProforma() {
     const data = {
-      supplier: this.proveedorId(),
-      date: this.fecha(),
-      status: this.status(),
-      notes: this.notas(),
-      items: this.items()
+      supplier: this.proveedorId(), date: this.fecha(),
+      status: this.status(), notes: this.notas(), items: this.items()
     };
     this.proformaService.createProforma(data).subscribe({
       next: () => {
-        this.mensaje.set('Proforma creada exitosamente');
-        this.proveedorId.set(0);
-        this.fecha.set('');
-        this.status.set('pendiente');
-        this.notas.set('');
-        this.items.set([]);
+        this.alert.success('Proforma creada exitosamente');
+        this.proveedorId.set(0); this.fecha.set('');
+        this.status.set('pendiente'); this.notas.set(''); this.items.set([]);
+        this.pagina = 1;
         this.loadProformas();
       },
-      error: () => { this.error.set('Error al crear proforma'); }
+      error: () => this.alert.error('Error al crear proforma')
     });
   }
 }

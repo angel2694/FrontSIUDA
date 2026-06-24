@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ProductoService } from '../../core/services/productos/producto';
 import { CategoriaService } from '../../core/services/categorias/categoria';
 import { UnidadService } from '../../core/services/unidades/unidad';
+import { AlertService } from '../../core/services/alert/alert';
 
 @Component({
   selector: 'app-producto',
@@ -14,8 +15,6 @@ import { UnidadService } from '../../core/services/unidades/unidad';
 export class Producto implements OnInit {
   productos: any[] = [];
   loading = signal(false);
-  mensaje = signal('');
-  error = signal('');
   code = signal('');
   nombre = signal('');
   descripcion = signal('');
@@ -24,11 +23,15 @@ export class Producto implements OnInit {
   unidadId = signal(0);
   categorias = signal<any[]>([]);
   unidades = signal<any[]>([]);
+  busqueda = '';
+  pagina = 1;
+  porPagina = 5;
 
   constructor(
     private productoService: ProductoService,
     private categoriaService: CategoriaService,
-    private unidadService: UnidadService
+    private unidadService: UnidadService,
+    private alert: AlertService
   ) {}
 
   ngOnInit() {
@@ -37,19 +40,23 @@ export class Producto implements OnInit {
     this.unidadService.getUnidades().subscribe(data => this.unidades.set(data as any[]));
   }
 
-  loadProductos() {
-    this.loading.set(true);
-    this.productoService.getProductos().subscribe({
-      next: (data) => {
-        this.productos = data;
-        this.loading.set(false);
-      },
-      error: () => {
-        this.error.set('Error al cargar productos');
-        this.loading.set(false);
-      }
-    });
+  get filtrado() {
+    const b = this.busqueda.toLowerCase();
+    return b ? this.productos.filter(p =>
+      p.name?.toLowerCase().includes(b) || p.code?.toLowerCase().includes(b)
+    ) : this.productos;
   }
+
+  get paginado() {
+    const inicio = (this.pagina - 1) * this.porPagina;
+    return this.filtrado.slice(inicio, inicio + this.porPagina);
+  }
+
+  get totalPaginas() {
+    return Math.ceil(this.filtrado.length / this.porPagina);
+  }
+
+  onBusqueda(val: string) { this.busqueda = val; this.pagina = 1; }
 
   getNombreCategoria(id: number): string {
     return this.categorias().find(c => c.id === id)?.name ?? id;
@@ -60,29 +67,28 @@ export class Producto implements OnInit {
     return u ? `${u.name} (${u.abbreviation})` : String(id);
   }
 
+  loadProductos() {
+    this.loading.set(true);
+    this.productoService.getProductos().subscribe({
+      next: (data) => { this.productos = data; this.loading.set(false); },
+      error: () => { this.alert.error('Error al cargar productos'); this.loading.set(false); }
+    });
+  }
+
   crearProducto() {
     const data = {
-      code: this.code(),
-      name: this.nombre(),
-      description: this.descripcion(),
-      category: this.categoriaId(),
-      unit_measure: this.unidadId(),
-      min_stock: this.minStock()
+      code: this.code(), name: this.nombre(), description: this.descripcion(),
+      category: this.categoriaId(), unit_measure: this.unidadId(), min_stock: this.minStock()
     };
     this.productoService.createProducto(data).subscribe({
       next: () => {
-        this.mensaje.set('Producto creado exitosamente');
-        this.code.set('');
-        this.nombre.set('');
-        this.descripcion.set('');
-        this.minStock.set(0);
-        this.categoriaId.set(0);
-        this.unidadId.set(0);
+        this.alert.success('Producto creado exitosamente');
+        this.code.set(''); this.nombre.set(''); this.descripcion.set('');
+        this.minStock.set(0); this.categoriaId.set(0); this.unidadId.set(0);
+        this.pagina = 1;
         this.loadProductos();
       },
-      error: () => {
-        this.error.set('Error al crear producto');
-      }
+      error: () => this.alert.error('Error al crear producto')
     });
   }
 }

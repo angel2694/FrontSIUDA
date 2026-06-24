@@ -1,6 +1,7 @@
-<div class="sidebar p-3" style="width: 220px;">
+<div class="sidebar">
   <ul class="nav flex-column">
-    @for (modulo of modulos; track modulo.id) {
+
+    @for (modulo of modulosPrincipales; track modulo.id) {
       <li class="nav-item">
         <a [routerLink]="modulo.url" routerLinkActive="active" class="nav-link">
           <i class="bi {{ modulo.icono }} me-2"></i>{{ modulo.nombre }}
@@ -8,12 +9,34 @@
       </li>
     }
 
-    <li class="nav-item mt-auto">
+    @if (modulosAdmin.length > 0) {
+      <li class="nav-item">
+        <button class="admin-toggle w-100 text-start border-0 d-flex justify-content-between align-items-center"
+          [class.open]="adminOpen"
+          (click)="adminOpen = !adminOpen">
+          <span><i class="bi bi-gear me-2"></i>Administración</span>
+          <i class="bi bi-chevron-down chevron"></i>
+        </button>
+
+        <div class="submenu-wrapper" [style.max-height]="adminOpen ? '400px' : '0'">
+          <ul class="submenu nav flex-column">
+            @for (modulo of modulosAdmin; track modulo.id) {
+              <li class="nav-item">
+                <a [routerLink]="modulo.url" routerLinkActive="active" class="nav-link-sub">
+                  <i class="bi {{ modulo.icono }} me-1"></i>{{ modulo.nombre }}
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+      </li>
+    }
+
+    <li class="nav-item mt-2">
       <a routerLink="/app/perfil" routerLinkActive="active" class="nav-link">
         <i class="bi bi-person-circle me-2"></i>Mi perfil
       </a>
-  </li>
-  </ul>
+    </li>
 
-  
+  </ul>
 </div>

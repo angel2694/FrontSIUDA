@@ -34,3 +34,68 @@
   opacity:     1;
   font-weight: 600;
 }
+
+/* Botón "Administración" */
+.sidebar .admin-toggle {
+  color:         var(--sidebar-text);
+  background:    transparent;
+  border-radius: 8px;
+  padding:       10px 12px;
+  margin-bottom: 4px;
+  font-size:     14px;
+  opacity:       0.85;
+  transition:    background 0.2s, opacity 0.2s;
+  cursor:        pointer;
+}
+
+.sidebar .admin-toggle:hover,
+.sidebar .admin-toggle.open {
+  background:  var(--sidebar-hover);
+  opacity:     1;
+  font-weight: 600;
+}
+
+.sidebar .admin-toggle .chevron {
+  transition: transform 0.25s ease;
+}
+
+.sidebar .admin-toggle.open .chevron {
+  transform: rotate(180deg);
+}
+
+/* Contenedor del submenú con animación */
+.sidebar .submenu-wrapper {
+  overflow:   hidden;
+  transition: max-height 0.25s ease;
+}
+
+/* Panel de fondo del submenú */
+.sidebar .submenu {
+  background:    rgba(0,0,0,0.15);
+  border-radius: 8px;
+  margin:        2px 0 6px 0;
+  padding:       4px 0;
+}
+
+/* Ítems del submenú */
+.sidebar .nav-link-sub {
+  color:         var(--sidebar-text);
+  border-radius: 6px;
+  padding:       8px 12px 8px 32px;
+  margin:        1px 4px;
+  font-size:     13px;
+  opacity:       0.75;
+  transition:    background 0.2s, opacity 0.2s;
+  display:       block;
+}
+
+.sidebar .nav-link-sub:hover {
+  background: rgba(255,255,255,0.1);
+  opacity:    1;
+}
+
+.sidebar .nav-link-sub.active {
+  background:  var(--sidebar-hover);
+  opacity:     1;
+  font-weight: 600;
+}

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { forkJoin } from 'rxjs';
 import { ProductoService } from '../../core/services/productos/producto';
 import { CategoriaService } from '../../core/services/categorias/categoria';
 import { ProveedorService } from '../../core/services/proveedores/proveedor';
@@ -47,28 +48,31 @@ export class Dashboard implements OnInit {
     private productoService: ProductoService,
     private categoriaService: CategoriaService,
     private proveedorService: ProveedorService,
-    private proformaService: ProformaService
+    private proformaService: ProformaService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.productoService.getProductos().subscribe(data => {
-      const list = data as any[];
-      this.totalProductos = list.length;
-      this.buildBarChart(list);
-    });
+    forkJoin({
+      productos: this.productoService.getProductos(),
+      categorias: this.categoriaService.getCategorias(),
+      proveedores: this.proveedorService.getProveedores(),
+      proformas: this.proformaService.getProformas()
+    }).subscribe(({ productos, categorias, proveedores, proformas }) => {
+      const prods = productos as any[];
+      const cats = categorias as any[];
+      const provs = proveedores as any[];
+      const pfs = proformas as any[];
 
-    this.categoriaService.getCategorias().subscribe(data => {
-      this.totalCategorias = (data as any[]).length;
-    });
+      this.totalProductos = prods.length;
+      this.totalCategorias = cats.length;
+      this.totalProveedores = provs.length;
+      this.totalProformas = pfs.length;
 
-    this.proveedorService.getProveedores().subscribe(data => {
-      this.totalProveedores = (data as any[]).length;
-    });
+      this.buildDonaChart(pfs);
+      this.buildBarChart(prods, cats);
 
-    this.proformaService.getProformas().subscribe(data => {
-      const list = data as any[];
-      this.totalProformas = list.length;
-      this.buildDonaChart(list);
+      this.cdr.detectChanges();
     });
   }
 
@@ -83,17 +87,15 @@ export class Dashboard implements OnInit {
     };
   }
 
-  buildBarChart(productos: any[]) {
-    this.categoriaService.getCategorias().subscribe(catsRaw => { const cats = catsRaw as any[];
-      const counts = cats.map(c => ({
-        name: c.name,
-        count: productos.filter(p => p.category === c.id).length
-      }));
-      this.barOptions = {
-        ...this.barOptions,
-        series: [{ name: 'Productos', data: counts.map(c => c.count) }],
-        xaxis: { categories: counts.map(c => c.name) }
-      };
-    });
+  buildBarChart(productos: any[], categorias: any[]) {
+    const counts = categorias.map(c => ({
+      name: c.name,
+      count: productos.filter(p => p.category === c.id).length
+    }));
+    this.barOptions = {
+      ...this.barOptions,
+      series: [{ name: 'Productos', data: counts.map(c => c.count) as any[] }],
+      xaxis: { categories: counts.map(c => c.name) }
+    };
   }
 }
