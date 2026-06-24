@@ -25,7 +25,7 @@ export class Producto implements OnInit {
   unidades = signal<any[]>([]);
   busqueda = '';
   pagina = 1;
-  porPagina = 5;
+  porPagina = 10;
   sortField = '';
   sortAsc = true;
 
