@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, signal, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { forkJoin } from 'rxjs';
@@ -20,7 +20,7 @@ export class Dashboard implements OnInit {
   totalCategorias = 0;
   totalProformas = 0;
   today = new Date().toLocaleDateString('es-PE', { year: 'numeric', month: 'long', day: 'numeric' });
-  username = '';
+  username = signal<string>('');
 
   // Gráfico de dona — proformas por estado
   donaOptions: any = {
@@ -54,7 +54,7 @@ export class Dashboard implements OnInit {
     private cdr: ChangeDetectorRef,
     private authService: AuthService
   ) {
-    this.username = this.authService.getUsername();
+    this.username.set(this.authService.getUsername());
   }
 
   ngOnInit() {
