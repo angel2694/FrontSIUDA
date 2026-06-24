@@ -29,8 +29,8 @@
         <thead class="table-light">
           <tr>
             <th>ID</th>
-            <th>Nombre</th>
-            <th>Abreviatura</th>
+            <th (click)="sortBy('name')" style="cursor:pointer">Nombre {{ sortIcon('name') }}</th>
+            <th (click)="sortBy('abbreviation')" style="cursor:pointer">Abreviatura {{ sortIcon('abbreviation') }}</th>
             <th>Estado</th>
           </tr>
         </thead>

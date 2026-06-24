@@ -3,4 +3,5 @@ export interface Modulo {
   nombre: string;
   url: string;
   icono: string;
+  grupo: 'principal' | 'administracion';
 }

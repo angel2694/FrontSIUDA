@@ -112,10 +112,10 @@
           <tr>
             <th>#</th>
             <th>Proveedor</th>
-            <th>Fecha</th>
+            <th (click)="sortBy('date')" style="cursor:pointer">Fecha {{ sortIcon('date') }}</th>
             <th>Ítems</th>
             <th>Total</th>
-            <th>Estado</th>
+            <th (click)="sortBy('status')" style="cursor:pointer">Estado {{ sortIcon('status') }}</th>
           </tr>
         </thead>
         <tbody>

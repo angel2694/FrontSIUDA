@@ -62,11 +62,11 @@
       <table class="table table-hover mb-0">
         <thead class="table-light">
           <tr>
-            <th>Código</th>
-            <th>Nombre</th>
+            <th (click)="sortBy('code')" style="cursor:pointer">Código {{ sortIcon('code') }}</th>
+            <th (click)="sortBy('name')" style="cursor:pointer">Nombre {{ sortIcon('name') }}</th>
             <th>Categoría</th>
             <th>Unidad</th>
-            <th>Stock mín.</th>
+            <th (click)="sortBy('min_stock')" style="cursor:pointer">Stock mín. {{ sortIcon('min_stock') }}</th>
             <th>Estado</th>
           </tr>
         </thead>

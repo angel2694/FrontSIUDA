@@ -26,6 +26,8 @@ export class Producto implements OnInit {
   busqueda = '';
   pagina = 1;
   porPagina = 5;
+  sortField = '';
+  sortAsc = true;
 
   constructor(
     private productoService: ProductoService,
@@ -40,11 +42,30 @@ export class Producto implements OnInit {
     this.unidadService.getUnidades().subscribe(data => this.unidades.set(data as any[]));
   }
 
+  sortBy(field: string) {
+    if (this.sortField === field) this.sortAsc = !this.sortAsc;
+    else { this.sortField = field; this.sortAsc = true; }
+    this.pagina = 1;
+  }
+
+  sortIcon(field: string): string {
+    if (this.sortField !== field) return '⇅';
+    return this.sortAsc ? '▲' : '▼';
+  }
+
   get filtrado() {
     const b = this.busqueda.toLowerCase();
-    return b ? this.productos.filter(p =>
+    let list = b ? this.productos.filter(p =>
       p.name?.toLowerCase().includes(b) || p.code?.toLowerCase().includes(b)
-    ) : this.productos;
+    ) : [...this.productos];
+    if (this.sortField) {
+      list.sort((a, b) => {
+        const va = String(a[this.sortField] ?? '').toLowerCase();
+        const vb = String(b[this.sortField] ?? '').toLowerCase();
+        return this.sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+      });
+    }
+    return list;
   }
 
   get paginado() {
@@ -52,19 +73,27 @@ export class Producto implements OnInit {
     return this.filtrado.slice(inicio, inicio + this.porPagina);
   }
 
-  get totalPaginas() {
-    return Math.ceil(this.filtrado.length / this.porPagina);
-  }
+  get totalPaginas() { return Math.ceil(this.filtrado.length / this.porPagina); }
 
   onBusqueda(val: string) { this.busqueda = val; this.pagina = 1; }
 
   getNombreCategoria(id: number): string {
-    return this.categorias().find(c => c.id === id)?.name ?? id;
+    return this.categorias().find(c => c.id === id)?.name ?? String(id);
   }
 
   getNombreUnidad(id: number): string {
     const u = this.unidades().find(u => u.id === id);
     return u ? `${u.name} (${u.abbreviation})` : String(id);
+  }
+
+  private validar(): boolean {
+    if (!this.code().trim()) { this.alert.error('El código del producto es obligatorio.'); return false; }
+    if (!this.nombre().trim()) { this.alert.error('El nombre del producto es obligatorio.'); return false; }
+    if (this.nombre().trim().length < 2) { this.alert.error('El nombre debe tener al menos 2 caracteres.'); return false; }
+    if (this.categoriaId() === 0) { this.alert.error('Debe seleccionar una categoría.'); return false; }
+    if (this.unidadId() === 0) { this.alert.error('Debe seleccionar una unidad de medida.'); return false; }
+    if (this.minStock() < 0) { this.alert.error('El stock mínimo no puede ser negativo.'); return false; }
+    return true;
   }
 
   loadProductos() {
@@ -76,9 +105,12 @@ export class Producto implements OnInit {
   }
 
   crearProducto() {
+    if (!this.validar()) return;
     const data = {
-      code: this.code(), name: this.nombre(), description: this.descripcion(),
-      category: this.categoriaId(), unit_measure: this.unidadId(), min_stock: this.minStock()
+      code: this.code().trim().toUpperCase(), name: this.nombre().trim(),
+      description: this.descripcion().trim(),
+      category: this.categoriaId(), unit_measure: this.unidadId(),
+      min_stock: this.minStock()
     };
     this.productoService.createProducto(data).subscribe({
       next: () => {

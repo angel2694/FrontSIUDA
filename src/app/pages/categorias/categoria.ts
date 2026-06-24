@@ -18,16 +18,37 @@ export class Categoria implements OnInit {
   busqueda = '';
   pagina = 1;
   porPagina = 5;
+  sortField = '';
+  sortAsc = true;
 
   constructor(private categoriaService: CategoriaService, private alert: AlertService) {}
 
   ngOnInit() { this.loadCategorias(); }
 
+  sortBy(field: string) {
+    if (this.sortField === field) this.sortAsc = !this.sortAsc;
+    else { this.sortField = field; this.sortAsc = true; }
+    this.pagina = 1;
+  }
+
+  sortIcon(field: string): string {
+    if (this.sortField !== field) return '⇅';
+    return this.sortAsc ? '▲' : '▼';
+  }
+
   get filtrado() {
     const b = this.busqueda.toLowerCase();
-    return b ? this.categorias.filter(c =>
+    let list = b ? this.categorias.filter(c =>
       c.name?.toLowerCase().includes(b) || c.description?.toLowerCase().includes(b)
-    ) : this.categorias;
+    ) : [...this.categorias];
+    if (this.sortField) {
+      list.sort((a, b) => {
+        const va = String(a[this.sortField] ?? '').toLowerCase();
+        const vb = String(b[this.sortField] ?? '').toLowerCase();
+        return this.sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+      });
+    }
+    return list;
   }
 
   get paginado() {
@@ -35,11 +56,15 @@ export class Categoria implements OnInit {
     return this.filtrado.slice(inicio, inicio + this.porPagina);
   }
 
-  get totalPaginas() {
-    return Math.ceil(this.filtrado.length / this.porPagina);
-  }
+  get totalPaginas() { return Math.ceil(this.filtrado.length / this.porPagina); }
 
   onBusqueda(val: string) { this.busqueda = val; this.pagina = 1; }
+
+  private validar(): boolean {
+    if (!this.nombre().trim()) { this.alert.error('El nombre de la categoría es obligatorio.'); return false; }
+    if (this.nombre().trim().length < 2) { this.alert.error('El nombre debe tener al menos 2 caracteres.'); return false; }
+    return true;
+  }
 
   loadCategorias() {
     this.loading.set(true);
@@ -50,7 +75,8 @@ export class Categoria implements OnInit {
   }
 
   crearCategoria() {
-    this.categoriaService.createCategoria({ name: this.nombre(), description: this.descripcion() }).subscribe({
+    if (!this.validar()) return;
+    this.categoriaService.createCategoria({ name: this.nombre().trim(), description: this.descripcion().trim() }).subscribe({
       next: () => {
         this.alert.success('Categoría creada exitosamente');
         this.nombre.set(''); this.descripcion.set('');

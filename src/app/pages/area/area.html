@@ -29,8 +29,8 @@
         <thead class="table-light">
           <tr>
             <th>ID</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
+            <th (click)="sortBy('name')" style="cursor:pointer">Nombre {{ sortIcon('name') }}</th>
+            <th (click)="sortBy('description')" style="cursor:pointer">Descripción {{ sortIcon('description') }}</th>
             <th>Estado</th>
           </tr>
         </thead>
